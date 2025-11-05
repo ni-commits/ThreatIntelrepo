@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PhishSim360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-navy: #1A1F71;
+            --primary-navy-dark: #131750;
+            --secondary-bg: #F5F7FA;
+            --content-bg: #FFFFFF;
+            --text-dark: #1A202C;
+            --text-light: #A0AEC0;
+            --border-color: #E2E8F0;
+            --danger-color: #E53E3E;
+            --link-color: var(--primary-navy);
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-bg);
+            color: var(--text-dark);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 450px;
+        }
+        .card {
+            background-color: var(--content-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            padding: 2.5rem;
+        }
+        .card-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+            text-align: center;
+            color: var(--primary-navy);
+        }
+        .card-header p {
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-light);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn {
+            padding: 0.85rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-primary {
+            background-color: var(--primary-navy);
+            color: #fff;
+        }
+        .text-center { text-align: center; }
+        .mt-3 { margin-top: 1.5rem; }
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .flash {
+            padding: 1rem;
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 1.5rem;
+            background-color: var(--danger-color);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="card">
+            <div class="card-header">
+                <h1>Create Your Account</h1>
+                <p>Start managing your campaigns today.</p>
+            </div>
+
+            <form action="{{ url_for('signup') }}" method="post">
+                <div class="form-group">
+                    <label for="company_name" class="form-label">Company Name</label>
+                    <input type="text" id="company_name" name="company_name" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="form-label">Your Username (for login)</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+            <div class="text-center mt-3">
+                <p>Already have an account? <a href="{{ url_for('user_login') }}">Log In</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Campaigns - PhishSim360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* --- Professional Color Palette --- */
+            --primary-navy: #1A1F71;
+            --primary-navy-dark: #131750;
+            --primary-navy-light: #2A308A;
+            --secondary-bg: #F5F7FA;
+            --content-bg: #FFFFFF;
+            --text-dark: #1A202C;
+            --text-light: #A0AEC0;
+            --text-white: #FFFFFF;
+            --border-color: #E2E8F0;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --danger-color: #E53E3E;
+            --danger-hover: #C53030;
+            --success-color: #38A169;
+            --success-hover: #2F855A;
+            --warning-color: #DD6B20;
+            --warning-hover: #C05621;
+            --info-color: #3182CE;
+            --info-hover: #2B6CB0;
+            --download-color: #38B2AC;
+            --download-hover: #319795;
+            --disabled-bg: #E2E8F0;
+            --disabled-text: #A0AEC0;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-bg);
+            color: var(--text-dark);
+            margin: 0;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--primary-navy);
+            color: var(--text-white);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 0.9rem 1.25rem;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a.active {
+            background-color: var(--primary-navy-light);
+            color: var(--text-white);
+        }
+
+        .sidebar-nav li a svg {
+            margin-right: 1rem;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+        }
+        
+        .sidebar-footer a {
+            background-color: var(--primary-navy-dark) !important;
+        }
+
+        .sidebar-footer a:hover {
+            background-color: var(--danger-hover) !important;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+        }
+
+        header {
+            margin-bottom: 2.5rem;
+        }
+        
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        header p {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        /* --- Cards --- */
+        .card {
+            background-color: var(--content-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card-header h3 {
+            margin: 0 0 2rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        /* --- Table --- */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        
+        th {
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary { background-color: var(--primary-navy); color: var(--text-white); }
+        .btn-primary:hover:not(:disabled) { background-color: var(--primary-navy-dark); }
+        .btn-success { background-color: var(--success-color); color: var(--text-white); }
+        .btn-success:hover:not(:disabled) { background-color: var(--success-hover); }
+        .btn-warning { background-color: var(--warning-color); color: var(--text-white); }
+        .btn-warning:hover:not(:disabled) { background-color: var(--warning-hover); }
+        .btn-info { background-color: var(--info-color); color: var(--text-white); }
+        .btn-info:hover:not(:disabled) { background-color: var(--info-hover); }
+        .btn-download { background-color: var(--download-color); color: var(--text-white); }
+        .btn-download:hover:not(:disabled) { background-color: var(--download-hover); }
+        .btn-secondary { background-color: var(--disabled-bg); color: var(--disabled-text); }
+
+        .btn:disabled {
+            background-color: var(--disabled-bg);
+            color: var(--disabled-text);
+            cursor: not-allowed;
+        }
+        
+        td form {
+            margin:0;
+            display: inline-block;
+        }
+
+        /* --- Badge Styles --- */
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.6em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.375rem;
+            color: #fff;
+        }
+        .badge-success { background-color: var(--success-color); }
+        .badge-secondary { background-color: #6c757d; }
+        .badge-info { background-color: var(--info-color); }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .dashboard-container { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; align-items: center; padding: 1rem 1.5rem; justify-content: space-between; }
+            .sidebar-header { margin: 0; }
+            .sidebar-nav { display: none; }
+            .main-content { padding: 1.5rem; }
+            header h1 { font-size: 1.75rem; }
+            .card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>PhishSim360</h2>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="/user-dashboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="#" class="active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17l10.5-15L22 17"></path><path d="M8 14l6 6"></path><path d="M16 14l-6 6"></path></svg>
+                    <span>Your Campaigns</span>
+                </a></li>
+                <li><a href="/register-campaign">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>Register Campaign</span>
+                </a></li>
+                <li class="sidebar-footer"><a href="/logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Logout</span>
+                </a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header>
+                <h1>Your Campaigns</h1>
+                <p>A detailed list of all your registered campaigns.</p>
+            </header>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>All Campaign Data</h3>
+                </div>
+                <div class="table-container">
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Company Name</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Schedule & Status</th>
+                                <th>Last Run</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for campaign in campaigns %}
+                            <tr>
+                                <td>{{ campaign.company_name }}</td>
+                                <td>{{ campaign.campaign_date.strftime('%Y-%m-%d') }}</td>
+                                <td>{{ campaign.category }}</td>
+                                <td>
+                                    {% if campaign.is_recurring %}
+                                        Every {{ campaign.recurrence_interval }} mins
+                                        {% if campaign.is_active %}
+                                            <span class="badge badge-success">Active</span>
+                                        {% else %}
+                                            <span class="badge badge-secondary">Stopped</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge badge-info">One-Time</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ campaign.last_run_time.strftime('%Y-%m-%d %H:%M') if campaign.last_run_time else 'Never' }}
+                                </td>
+                                <td>
+                                    {% if campaign.is_recurring %}
+                                        {% if campaign.is_active %}
+                                            <form action="{{ url_for('stop_campaign', campaign_id=campaign.id) }}" method="post">
+                                                <button type="submit" class="btn btn-warning">Stop</button>
+                                            </form>
+                                        {% else %}
+                                            <form action="{{ url_for('start_campaign', campaign_id=campaign.id) }}" method="post">
+                                                <button type="submit" class="btn btn-success">Start</button>
+                                            </form>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if not campaign.last_run_time %}
+                                            <form action="{{ url_for('run_user_campaign', campaign_id=campaign.id) }}" method="post">
+                                                <button type="submit" class="btn btn-primary">Run Once</button>
+                                            </form>
+                                        {% else %}
+                                            <button class="btn btn-secondary" disabled>Completed</button>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if campaign.last_run_time %}
+                                        <a href="{{ url_for('view_live_report', campaign_id=campaign.id) }}" class="btn btn-info">View Report</a>
+                                    {% else %}
+                                        <button class="btn" disabled>Awaiting</button>
+                                    {% endif %}
+
+                                    <a href="{{ url_for('download_csv', filename=campaign.filename) }}" class="btn btn-download">
+                                        Data
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

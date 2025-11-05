@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - [Your Company Name]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* --- PhishSim360 Color Palette --- */
+            --primary-bg: #F5F7FA; /* Light gray background */
+            --secondary-bg: #FFFFFF; /* White for the form card */
+            --dark-text: #333333; /* Dark gray for main text */
+            --light-text: #FFFFFF; /* White text for dark backgrounds */
+            --accent-navy: #1A1F71; /* Primary action color */
+            --accent-navy-hover: #131750; /* Darker navy for hover */
+            --border-color: #E0E0E0; /* Light border for card/inputs */
+            --shadow-color: rgba(0, 0, 0, 0.1); /* Standard shadow */
+            --header-bg: #FFFFFF; /* White header */
+            --header-text: #1A1F71; /* Navy text for header */
+            --accent-navy-rgb: 26, 31, 113; /* RGB of #1A1F71 for focus ring */
+            --link-hover-color: #00BFFF; /* Accent sky blue for link hover */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--dark-text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 10% 20%, rgba(var(--accent-navy-rgb), 0.03) 0%, transparent 70%),
+                              radial-gradient(circle at 90% 80%, rgba(var(--accent-navy-rgb), 0.03) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        header {
+            width: 100%;
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            padding: 25px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            position: absolute; 
+            top: 0;
+            left: 0;
+            z-index: 10;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: none;
+            color: var(--header-text);
+        }
+
+        form {
+            background-color: var(--secondary-bg);
+            border-radius: 64px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            padding: 45px;
+            margin: 120px auto 40px auto; 
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 5;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 1px solid var(--border-color);
+        }
+
+        form:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        form h1 {
+            color: var(--dark-text);
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        form h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-navy);
+            margin: 15px auto 0;
+            border-radius: 5px;
+        }
+
+        input {
+            width: calc(100% - 40px);
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #CCCCCC;
+            background-color: #FFFFFF;
+            color: var(--dark-text);
+            border-radius: 8px;
+            font-size: 1em;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input::placeholder {
+            color: #6c757d; 
+        }
+
+        input:focus {
+            border-color: #80BDFF;
+            box-shadow: 0 0 8px rgba(var(--accent-navy-rgb), 0.2);
+            outline: none;
+        }
+
+        button {
+            background-color: var(--accent-navy);
+            color: var(--light-text);
+            border: none;
+            border-radius: 8px;
+            padding: 18px 35px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: var(--accent-navy-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
+            z-index: 5; 
+            position: relative;
+        }
+
+        .back-button a {
+            color: var(--accent-navy);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .back-button a:hover {
+            color: var(--link-hover-color);
+        }
+
+        footer {
+            background-color: var(--accent-navy);
+            color: var(--light-text);
+            margin-top: auto;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 0.9em;
+            z-index: 10;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin Portal</h1>
+    </header>
+
+    <form action="/admin_login" method="post">
+        <h1>Admin Login</h1>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+        {% if error %}
+        <p style="color: #dc3545; margin-top: 15px;">{{ error }}</p> 
+        {% endif %}
+    </form>
+
+    <div class="back-button">
+        <a href="/">Back to Home</a>
+    </div>
+
+    <footer>
+        &copy; 2025 [Your Company Name]. All rights reserved.
+    </footer>
+</body>
+</html>
+
+

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recurring Schedule Configuration - PhishSim360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-navy: #1A1F71;
+            --primary-navy-dark: #131750;
+            --secondary-bg: #F5F7FA;
+            --content-bg: #FFFFFF;
+            --text-dark: #1A202C;
+            --text-light: #A0AEC0;
+            --text-white: #FFFFFF;
+            --border-color: #E2E8F0;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --info-color: #3182CE;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 40px;
+            font-size: 16px;
+        }
+
+        .container {
+            background-color: var(--content-bg);
+            max-width: 800px;
+            margin: auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-navy);
+            margin-bottom: 30px;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-navy);
+            box-shadow: 0 0 0 3px rgba(26, 31, 113, 0.2);
+        }
+
+        small {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            display: block;
+            margin-top: 0.25rem;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .note {
+            font-weight: 500; 
+            font-size: 0.95rem; 
+            color: var(--info-color); 
+            margin-top: 0.5rem;
+            padding: 10px;
+            border: 1px solid #BEE3F8;
+            background-color: #EBF8FF;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Recurring Schedule Configuration</h2>
+
+        <form id="recurringScheduleForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="interval">Recurrence Interval (in Minutes)</label>
+                    <select class="form-control" id="interval" name="interval" required>
+                        <option value="1">1 Minutes</option>
+                        <option value="2">2 Minutes</option>
+                        <option value="5">5 Minutes</option>
+                        <option value="10">10 Minutes</option>
+                        <option value="60">1 Hour (60 Minutes)</option> 
+                    </select>
+                    <small>How often the campaign should run.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="start_date">Campaign Start Date</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    <small>The date the campaign begins its recurring schedule.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="end_date">Campaign End Date (Optional)</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date">
+                    <small>Stops campaign after this date.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="total_campaign_count">Total Sends Limit (Optional)</label>
+                    <input type="number" class="form-control" id="total_campaign_count" name="total_campaign_count" min="1" placeholder="e.g., 12">
+                    <small>Stops campaign after this number of emails is sent.</small>
+                </div>
+                <div class="form-group">
+                    <label for="start_time">Daily Send Start Time (UTC)</label>
+                    <input type="time" class="form-control" id="start_time" name="start_time" required>
+                    <small>Start sending emails after this time.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="end_time">Daily Send End Time (UTC)</label>
+                    <input type="time" class="form-control" id="end_time" name="end_time" required>
+                    <small>Stop attempting to send emails after this time.</small>
+                </div>
+
+                <div class="form-group full-width">
+                    <p class="note">
+                        The campaign will stop when *either* the End Date *or* the Total Sends Limit is reached.
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

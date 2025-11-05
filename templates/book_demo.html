@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book a Demo - PhishSim360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* --- Professional Color Palette --- */
+            --primary-navy: #1A1F71;
+            --primary-navy-dark: #131750;
+            --primary-navy-light: #2A308A;
+            --secondary-bg: #F5F7FA;
+            --content-bg: #FFFFFF;
+            --text-dark: #1A202C;
+            --text-light: #A0AEC0;
+            --text-white: #FFFFFF;
+            --border-color: #E2E8F0;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --danger-color: #E53E3E;
+            --danger-hover: #C53030;
+            --info-color: #3182CE;
+            --info-hover: #2B6CB0;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-bg);
+            color: var(--text-dark);
+            margin: 0;
+            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            background-color: var(--content-bg);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2.5rem;
+        }
+
+        .navbar-brand {
+            color: var(--primary-navy);
+            font-weight: 700;
+            font-size: 1.75rem;
+            text-decoration: none;
+        }
+
+        /* --- Main Container --- */
+        .form-container-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding: 2.5rem 1rem;
+        }
+
+        .form-card {
+            background-color: var(--content-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 550px;
+        }
+        
+        .form-card-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        .form-card-header p {
+            margin: 0 0 2rem 0;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        /* --- Form Styling --- */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-navy);
+            box-shadow: 0 0 0 3px rgba(26, 31, 113, 0.2);
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            padding: 0.85rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-navy);
+            color: var(--text-white);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-navy-dark);
+            transform: translateY(-2px);
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .back-link a {
+            color: var(--info-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-navy);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 1.5rem 0;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="/">PhishSim360</a>
+    </nav>
+
+    <main class="form-container-wrapper">
+        <div class="form-card">
+            <div class="form-card-header">
+                <h1>Book a Demo</h1>
+                <p>Request a demo and we'll get back to you shortly.</p>
+            </div>
+            <form action="/book-demo" method="post">
+                <div class="form-group">
+                    <label for="company_name">Company Name</label>
+                    <input type="text" id="company_name" name="company_name" placeholder="Your company's name" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact_person">Contact Person</label>
+                    <input type="text" id="contact_person" name="contact_person" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="you@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Phone Number (Optional)</label>
+                    <input type="tel" id="phone_number" name="phone_number" placeholder="Your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message (Optional)</label>
+                    <textarea id="message" name="message" placeholder="Tell us about your specific interests..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Request</button>
+            </form>
+            <div class="back-link">
+                <a href="/">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p class="mb-0">&copy; 2025 PhishSim360. All rights reserved.</p>
+    </footer>
+</body>
+</html>

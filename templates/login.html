@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access - PhishSim360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Color Palette - Matching PhishSim360 Home Page */
+        :root {
+            --phishsim-bg-light-gray: #F5F7FA; /* Body background */
+            --phishsim-primary-navy-blue: #1A1F71; /* Header/primary text */
+            --phishsim-accent-sky-blue: #00BFFF; /* Accent for specific elements like heading underline */
+            --phishsim-button-blue: #007BFF; /* Standard button blue - Used for main CTA */
+            --phishsim-text-dark-gray: #333333; /* Main text color */
+            --phishsim-white: #FFFFFF; /* White elements */
+            --phishsim-border-light: #CCCCCC; /* Input border color */
+            --phishsim-button-blue-hover: #0056b3; /* Darker blue for button hover */
+            --phishsim-toggle-track-inactive: #E9ECEF; /* Lighter gray for inactive toggle track */
+            --phishsim-toggle-knob: #FFFFFF; /* White knob */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--phishsim-bg-light-gray);
+            color: var(--phsim-text-dark-gray);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        header {
+            width: 100%;
+            background-color: var(--phishsim-primary-navy-blue);
+            color: var(--phishsim-white);
+            padding: 25px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            color: var(--phishsim-white);
+        }
+
+        .logo {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: brightness(1.1);
+        }
+
+        .content-wrapper {
+            background-color: var(--phishsim-white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 45px;
+            margin: 40px auto;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 5;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 1px solid var(--phishsim-border-light);
+        }
+
+        .content-wrapper:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .content-wrapper h2 {
+            color: var(--phishsim-primary-navy-blue);
+            margin-bottom: 40px;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .content-wrapper h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--phishsim-accent-sky-blue);
+            margin: 15px auto 0;
+            border-radius: 5px;
+        }
+
+        /* Styles for the Toggle Switch */
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: var(--phishsim-text-dark-gray);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 140px;
+            height: 44px;
+            margin: 0 20px;
+            background-color: var(--phishsim-toggle-track-inactive);
+            border-radius: 22px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: transparent;
+            border-radius: 22px;
+            transition: .4s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 36px;
+            width: 64px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--phishsim-toggle-knob);
+            border-radius: 18px;
+            transition: .4s ease-in-out;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            /* --- FIX 1: Set Z-index lower than text --- */
+            z-index: 1; 
+        }
+
+        /* Text inside slider */
+        .toggle-slider .label-user, .toggle-slider .label-admin {
+            position: relative;
+            /* --- FIX 2: Higher Z-index and text shadow --- */
+            z-index: 5; 
+            text-shadow: 0 0 4px rgba(0, 0, 0, 0.2); 
+            /* --- (Original properties below) --- */
+            font-size: 1em;
+            font-weight: 600;
+            transition: color 0.4s ease-in-out;
+            user-select: none;
+            padding: 0 5px;
+        }
+
+        .toggle-slider .label-user {
+             margin-left: 5px;
+        }
+        .toggle-slider .label-admin {
+             margin-right: 5px;
+        }
+
+        /* Checked state for toggle switch */
+        input:checked + .toggle-slider {
+            background-color: transparent;
+        }
+        input:checked + .toggle-switch {
+            background-color: var(--phishsim-primary-navy-blue);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(78px);
+        }
+
+        /* Color labels based on checked state for professional look */
+        input:not(:checked) + .toggle-slider .label-admin {
+            color: var(--phishsim-text-dark-gray);
+        }
+        input:checked + .toggle-slider .label-user {
+            color: var(--phishsim-text-dark-gray);
+        }
+
+        input:not(:checked) + .toggle-slider .label-user {
+            color: var(--phishsim-primary-navy-blue);
+        }
+        input:checked + .toggle-slider .label-admin {
+            color: var(--phishsim-primary-navy-blue);
+        }
+
+        /* Dynamic content styling */
+        .login-content {
+            padding-top: 20px;
+        }
+
+        .login-content h3 {
+            color: var(--phishsim-primary-navy-blue);
+            margin-bottom: 15px;
+        }
+
+        .login-content p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: var(--phishsim-text-dark-gray);
+            margin-bottom: 30px;
+        }
+
+        .login-content button {
+            background-color: var(--phishsim-button-blue);
+            color: var(--phishsim-white);
+            border: none;
+            border-radius: 8px;
+            padding: 15px 30px;
+            cursor: pointer;
+            margin-top: 0px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            width: auto;
+            min-width: 180px;
+        }
+
+        .login-content button:hover {
+            background-color: var(--phishsim-button-blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        /* Style for "Register New Account" button */
+        .login-content .register-btn {
+            background-color: transparent;
+            color: var(--phishsim-primary-navy-blue);
+            border: 1px solid var(--phishsim-primary-navy-blue);
+            box-shadow: none;
+            margin-top: 25px;
+            font-size: 1em;
+            padding: 12px 25px;
+        }
+
+        .login-content .register-btn:hover {
+            background-color: var(--phishsim-primary-navy-blue);
+            color: var(--phishsim-white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        a {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Subtle background pattern/texture (matching home page) */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 191, 255, 0.03) 0%, transparent 70%),
+                              radial-gradient(circle at 90% 80%, rgba(0, 191, 255, 0.03) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            color: var(--phishsim-text-dark-gray);
+            font-size: 0.9em;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://via.placeholder.com/200x60?text=PhishSim360+Logo" alt="PhishSim360 Logo" class="logo">
+        <h1>Welcome to Your Secure Portal</h1>
+    </header>
+
+    <div class="content-wrapper">
+        <h2>Select Your Access</h2>
+
+        <div class="toggle-container">
+            <label class="toggle-switch">
+                <input type="checkbox" id="accessToggle">
+                <span class="toggle-slider">
+                    <span class="label-user">User</span>
+                    <span class="label-admin">Admin</span>
+                </span>
+            </label>
+        </div>
+
+        <div class="login-content">
+            <div id="userLogin" style="display: block;">
+                <h3>User Login Area</h3>
+                <p>Welcome, User! Please enter your credentials to proceed.</p>
+                <form action="/user_login" method="GET">
+                    <button type="submit">Log In as User</button>
+                </form>
+            </div>
+
+            <div id="adminLogin" style="display: none;">
+                <h3>Admin Login Area</h3>
+                <p>Hello, Administrator! Enter your credentials for privileged access.</p>
+                <form action="/admin_login" method="GET">
+                    <button type="submit">Log In as Admin</button>
+                </form>
+            </div>
+            
+            <a href="/signup" id="registerLink">
+                <button class="register-btn">Register New Account</button>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 PhishSim360. All rights reserved.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('accessToggle');
+            const userLogin = document.getElementById('userLogin');
+            const adminLogin = document.getElementById('adminLogin');
+            // 1. Get a reference to the register button's parent link element
+            const registerLink = document.getElementById('registerLink');
+
+            // Set initial state (User is default and selected)
+            toggle.checked = false; // Ensure the toggle is initially unchecked for 'User'
+            userLogin.style.display = 'block';
+            adminLogin.style.display = 'none';
+            // 2. Ensure it's visible initially (User mode)
+            registerLink.style.display = 'inline-block';
+
+            toggle.addEventListener('change', function() {
+                if (toggle.checked) {
+                    // Admin selected
+                    userLogin.style.display = 'none';
+                    adminLogin.style.display = 'block';
+                    // 3. HIDE the register button when Admin is selected
+                    registerLink.style.display = 'none';
+                } else {
+                    // User selected
+                    userLogin.style.display = 'block';
+                    adminLogin.style.display = 'none';
+                    // 4. SHOW the register button when User is selected
+                    registerLink.style.display = 'inline-block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

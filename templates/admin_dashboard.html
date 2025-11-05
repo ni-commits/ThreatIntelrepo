@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PhishSim3G60</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-navy: #1A1F71;
+            --primary-navy-dark: #131750;
+            --primary-navy-light: #2A308A;
+            --secondary-bg: #F5F7FA;
+            --content-bg: #FFFFFF;
+            --text-dark: #1A202C;
+            --text-light: #A0AEC0;
+            --text-white: #FFFFFF;
+            --border-color: #E2E8F0;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --danger-color: #E53E3E;
+            --danger-hover: #C53030;
+            --success-color: #38A169;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-bg);
+            color: var(--text-dark);
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: var(--primary-navy);
+            color: var(--text-white);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 0.9rem 1.25rem;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a.active {
+            background-color: var(--primary-navy-light);
+            color: var(--text-white);
+        }
+
+        .sidebar-nav li a svg {
+            margin-right: 1rem;
+            width: 20px;
+            height: 20px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+        }
+
+        .sidebar-footer a {
+            background-color: var(--danger-color) !important;
+            color: var(--text-white) !important;
+        }
+
+        .sidebar-footer a:hover {
+            background-color: var(--danger-hover) !important;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+        }
+
+        header {
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        header p {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--content-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-header h3 {
+            margin: 0 0 2rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        /* Forms */
+        form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .form-row {
+            display: contents;
+        }
+
+        @media (min-width: 768px) {
+            .add-admin-form {
+                grid-template-columns: 1fr 1fr auto;
+                align-items: flex-end;
+            }
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--primary-navy);
+            box-shadow: 0 0 0 3px rgba(26, 31, 113, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-navy);
+            color: var(--text-white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-navy-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: var(--text-white);
+        }
+
+        .btn-danger:hover {
+            background-color: var(--danger-hover);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        td:last-child {
+            text-align: right;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td form {
+            display: inline-block;
+            margin: 0;
+            grid-template-columns: 1fr;
+        }
+
+        td .btn-danger {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                align-items: center;
+                padding: 1rem 1.5rem;
+                justify-content: space-between;
+            }
+            .sidebar-header {
+                margin: 0;
+            }
+            .sidebar-nav {
+                display: none;
+            }
+            .main-content {
+                padding: 1.5rem;
+            }
+            header h1 {
+                font-size: 1.75rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>PhishSim360</h2>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="#" class="active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="{{ url_for('view_campaigns') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17l10.5-15L22 17"></path><path d="M8 14l6 6"></path><path d="M16 14l-6 6"></path></svg>
+                    <span>Campaigns</span>
+                </a></li>
+                <li class="sidebar-footer">
+                    <a href="{{ url_for('admin_logout') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header>
+                <h1>Welcome Back, {{ current_admin }}</h1>
+                <p>Here's your overview of the admin portal.</p>
+            </header>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Admin Management</h3>
+                </div>
+                
+                <form action="/admin_dashboard" method="post" class="add-admin-form">
+                    <input type="hidden" name="action" value="add">
+                    <div class="form-row">
+                        <input type="text" name="username" placeholder="New Admin Username" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="password" name="password" placeholder="New Admin Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Admin</button>
+                </form>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for admin in admins %}
+                            <tr>
+                                <td>{{ admin.username }}</td>
+                                <td>
+                                    <form action="/admin_dashboard" method="post">
+                                        <input type="hidden" name="admin_id" value="{{ admin.id }}">
+                                        <button type="submit" name="action" value="remove" class="btn btn-danger">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-buttons" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                    <a href="{{ url_for('view_campaigns') }}"><button class="btn btn-primary">View Campaigns</button></a>
+                    <a href="{{ url_for('admin_logout') }}" class="btn btn-danger">Admin Logout</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Campaigns - PhishSim360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-navy: #1A1F71;
+            --primary-navy-dark: #131750;
+            --primary-navy-light: #2A308A;
+            --secondary-bg: #F5F7FA;
+            --content-bg: #FFFFFF;
+            --text-dark: #1A202C;
+            --text-light: #A0AEC0;
+            --text-white: #FFFFFF;
+            --border-color: #E2E8F0;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --danger-color: #E53E3E;
+            --danger-hover: #C53030;
+            --success-color: #38A169;
+            --info-color: #3182CE;
+            --disabled-bg: #E2E8F0;
+            --disabled-text: #A0AEC0;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-bg);
+            color: var(--text-dark);
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: var(--primary-navy);
+            color: var(--text-white);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header h2 {
+            text-align: center;
+            margin: 0 0 3rem 0;
+            font-size: 1.75rem;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 0.9rem 1.25rem;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a.active {
+            background-color: var(--primary-navy-light);
+            color: var(--text-white);
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+        }
+
+        header h1 {
+            font-size: 2.25rem;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        header p {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-top: 0;
+        }
+
+        .card {
+            background-color: var(--content-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            padding: 2.5rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        
+        th {
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-info { background-color: var(--info-color); color: var(--text-white); }
+        .btn-secondary { background-color: #EDF2F7; color: var(--text-dark); }
+        .btn:disabled { background-color: var(--disabled-bg); color: var(--disabled-text); cursor: not-allowed; }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-active { background-color: #C6F6D5; color: #2F855A; }
+        .status-inactive { background-color: #FED7D7; color: #C53030; }
+        .status-completed { background-color: #BEE3F8; color: #2B6CB0; }
+        .status-pending { background-color: #FEEBC8; color: #C05621; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>PhishSim360</h2>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('admin_dashboard') }}"><span>Dashboard</span></a></li>
+                <li><a href="{{ url_for('view_campaigns') }}" class="active"><span>Campaigns</span></a></li>
+                <li class="sidebar-footer"><a href="{{ url_for('admin_logout') }}"><span>Logout</span></a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header>
+                <h1>All Campaigns</h1>
+                <p>An overview of all campaigns registered in the system.</p>
+            </header>
+            <div class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for campaign in campaigns %}
+                            <tr>
+                                <td>{{ campaign.company_name }}</td>
+                                <td>{{ campaign.campaign_date.strftime('%d %b %Y') }}</td>
+                                <td>{{ campaign.category }}</td>
+                                <td>
+                                    {% if campaign.is_recurring %}
+                                        Recurring
+                                    {% else %}
+                                        One-Time
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if campaign.is_recurring %}
+                                        {% if campaign.is_active %}
+                                            <span class="status-badge status-active">Active</span>
+                                        {% else %}
+                                            <span class="status-badge status-inactive">Inactive</span>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if campaign.last_run_time %}
+                                            <span class="status-badge status-completed">Completed</span>
+                                        {% else %}
+                                            <span class="status-badge status-pending">Pending</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('download_csv', filename=campaign.filename) }}" class="btn btn-secondary">Download CSV</a>
+                                    {% if campaign.last_run_time %}
+                                        <a href="{{ url_for('view_live_report', campaign_id=campaign.id) }}" class="btn btn-info">View Report</a>
+                                    {% else %}
+                                        <button class="btn" disabled>No Report</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 2rem;">No campaigns found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

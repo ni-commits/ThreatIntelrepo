@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register for a Campaign - PhishSim360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-navy: #1A1F71;
+            --primary-navy-dark: #131750;
+            --primary-navy-light: #2A308A;
+            --secondary-bg: #F5F7FA;
+            --content-bg: #FFFFFF;
+            --text-dark: #1A202C;
+            --text-light: #A0AEC0;
+            --text-white: #FFFFFF;
+            --border-color: #E2E8F0;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --danger-color: #E53E3E;
+            --danger-hover: #C53030;
+            --info-color: #3182CE;
+            --info-hover: #2B6CB0;
+            --success-color: #38A169;
+            --hr-fields-bg: #EBF8FF;
+            --ai-fields-bg: #F0FFF4;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-bg);
+            color: var(--text-dark);
+            margin: 0;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: var(--primary-navy);
+            color: var(--text-white);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 0.9rem 1.25rem;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a.active {
+            background-color: var(--primary-navy-light);
+            color: var(--text-white);
+        }
+
+        .sidebar-nav li a svg {
+            margin-right: 1rem;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+        }
+        
+        .sidebar-footer a {
+            background-color: var(--primary-navy-dark) !important;
+        }
+
+        .sidebar-footer a:hover {
+            background-color: var(--danger-hover) !important;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+        }
+
+        header {
+            margin-bottom: 2.5rem;
+        }
+        
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        header p {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        .card {
+            background-color: var(--content-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card-header h3 {
+            margin: 0 0 2rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-group.full-width {
+                grid-column: 1 / -1;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-navy);
+            box-shadow: 0 0 0 3px rgba(26, 31, 113, 0.2);
+        }
+
+        .recurrence-options-container {
+            display: none;
+            grid-column: 1 / -1;
+            background-color: var(--hr-fields-bg);
+            border: 1px solid #BEE3F8;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .recurrence-options-container h4 {
+            margin-top: 0; 
+            margin-bottom: 1.5rem; 
+            font-weight: 600; 
+            color: var(--primary-navy);
+        }
+
+        .hr-context-fields {
+            display: none;
+            grid-column: 1 / -1;
+            background-color: var(--hr-fields-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .hr-context-fields h4 {
+            margin: 0 0 1.5rem 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+        .alert-success {
+            background-color: #E6FFFA;
+            color: var(--success-color);
+            border: 1px solid #B2F5EA;
+        }
+        .alert-danger {
+            background-color: #FFF5F5;
+            color: var(--danger-color);
+            border: 1px solid #FED7D7;
+        }
+        .alert-warning {
+             background-color: #FAF5FF;
+            color: #805AD5;
+            border: 1px solid #D6BCFA;
+        }
+
+        .alert strong {
+            font-weight: 700;
+            color: var(--primary-navy-dark);
+        }
+
+        .image-source-section {
+            grid-column: 1 / -1;
+            background-color: #FFF9E6;
+            border: 2px solid #FFD700;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+
+        .image-source-section h4 {
+            margin: 0 0 1.5rem 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-navy);
+            display: flex;
+            align-items: center;
+        }
+
+        .image-source-section h4 svg {
+            margin-right: 0.75rem;
+        }
+
+        .image-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .image-option {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .image-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .image-option label {
+            display: block;
+            padding: 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+            text-align: center;
+        }
+
+        .image-option label:hover {
+            border-color: var(--primary-navy);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 31, 113, 0.15);
+        }
+
+        .image-option input[type="radio"]:checked + label {
+            border-color: var(--primary-navy);
+            background-color: rgba(26, 31, 113, 0.05);
+            font-weight: 600;
+        }
+
+        .image-option label svg {
+            display: block;
+            margin: 0 auto 0.75rem;
+            color: var(--primary-navy);
+        }
+
+        .ai-prompt-section {
+            display: none;
+            background-color: var(--ai-fields-bg);
+            border: 1px solid #68D391;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .ai-prompt-section.active {
+            display: block;
+        }
+
+        .ai-prompt-section h5 {
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2F855A;
+        }
+
+        .ai-prompt-section textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .prompt-examples {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 6px;
+            border: 1px solid #C6F6D5;
+        }
+
+        .prompt-examples p {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2F855A;
+        }
+
+        .prompt-examples ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            font-size: 0.85rem;
+            color: #4A5568;
+        }
+
+        .prompt-examples li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .logo-upload-section {
+            display: none;
+        }
+
+        .logo-upload-section.active {
+            display: block;
+        }
+
+        .form-actions {
+            grid-column: 1 / -1;
+            text-align: right;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-navy);
+            color: var(--text-white);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-navy-dark);
+            transform: translateY(-2px);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard-container { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; align-items: center; padding: 1rem 1.5rem; justify-content: space-between; }
+            .sidebar-header { margin: 0; }
+            .sidebar-nav { display: none; }
+            .main-content { padding: 1.5rem; }
+            header h1 { font-size: 1.75rem; }
+            .card { padding: 1.5rem; }
+            .image-option { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>PhishSim360</h2>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="/user-dashboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="/user-campaigns">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17l10.5-15L22 17"></path><path d="M8 14l6 6"></path><path d="M16 14l-6 6"></path></svg>
+                    <span>Your Campaigns</span>
+                </a></li>
+                <li><a href="#" class="active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>Register Campaign</span>
+                </a></li>
+                <li class="sidebar-footer"><a href="/logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Logout</span>
+                </a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header>
+                <h1>Register a New Campaign</h1>
+                <p>Fill out the details below to launch a new phishing simulation.</p>
+            </header>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>Campaign Details</h3>
+                </div>
+                <form action="/register-campaign" method="post" enctype="multipart/form-data">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="date">Date:</label>
+                            <input type="date" id="date" name="date" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category:</label>
+                            <select id="category" name="category" required>
+                                <option value="">--Select Category--</option>
+                                <option value="Banking">Banking</option>
+                                <option value="Delivery">Delivery</option>
+                                <option value="Retail">Retail</option>
+                                <option value="Technology">Technology</option>
+                                <option value="HR Template">Customized Template</option>
+                            </select>
+                        </div>
+
+                        <div class="image-source-section">
+                            <h4>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                Choose Email Banner Image
+                            </h4>
+                            
+                            <div class="image-options">
+                                <div class="image-option">
+                                    <input type="radio" id="default_image" name="image_source" value="default" checked>
+                                    <label for="default_image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                        Default Category Banner
+                                        <small style="display:block;margin-top:0.5rem;color:#718096;font-weight:400;">Use pre-designed images for your category</small>
+                                    </label>
+                                </div>
+                                
+                                <div class="image-option">
+                                    <input type="radio" id="upload_logo" name="image_source" value="logo">
+                                    <label for="upload_logo">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                        Upload Company Logo
+                                        <small style="display:block;margin-top:0.5rem;color:#718096;font-weight:400;">Upload your own logo (PNG/JPG)</small>
+                                    </label>
+                                </div>
+                                
+                                <div class="image-option">
+                                    <input type="radio" id="ai_generate" name="image_source" value="ai_generated">
+                                    <label for="ai_generate">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                                        AI-Generated Image
+                                        <small style="display:block;margin-top:0.5rem;color:#718096;font-weight:400;">Create custom images with AI</small>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="logo-upload-section" id="logo-upload-section">
+                                <div class="form-group">
+                                    <label for="logo">Upload Company Logo:</label>
+                                    <input type="file" id="logo" name="logo" accept=".png,.jpg,.jpeg" />
+                                    <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;">
+                                        Supported formats: PNG, JPG, JPEG (Max 5MB)
+                                    </p>
+                                    <div id="logo-preview" style="margin-top: 1rem; display: none;">
+                                        <p style="font-weight: 500;">Preview:</p>
+                                        <img id="logo-preview-img" src="" alt="Logo Preview" style="max-width: 250px; max-height: 100px; object-fit: contain;" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="ai-prompt-section" id="ai-prompt-section">
+                                <h5>🎨 Describe Your Desired Image</h5>
+                                <div class="form-group">
+                                    <label for="ai_prompt">AI Image Prompt:</label>
+                                    <textarea 
+                                        id="ai_prompt" 
+                                        name="ai_prompt" 
+                                        placeholder="Example: A professional banking login interface with blue and white colors, secure padlock icon, modern design, clean layout..."
+                                    ></textarea>
+                                </div>
+                                
+                                <div class="prompt-examples">
+                                    <p>💡 Example Prompts:</p>
+                                    <ul>
+                                        <li><strong>Banking:</strong> "Professional online banking banner, showing a login interface on a laptop screen, secure yet generic design, blue and white color scheme, financial icons, clean modern layout"</li>
+                                        <li><strong>E-commerce:</strong> "Modern e-commerce website banner with shopping cart and products, vibrant colors, friendly design, online store interface, high-resolution mockup"</li>
+                                        <li><strong>Delivery:</strong> "Delivery tracking interface on a smartphone, package tracking map, courier service banner, professional logistics design, orange and blue colors"</li>
+                                        <li><strong>Technology:</strong> "Tech company login portal, modern software interface, cloud services dashboard, purple and white design, professional IT aesthetic"</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recurrence_type">Campaign Schedule:</label>
+                            <select class="form-control" id="recurrence_type" name="recurrence_type">
+                                <option value="once" selected>Send Once</option>
+                                <option value="recurring">Recurring</option>
+                            </select>
+                        </div>
+
+                        <div class="recurrence-options-container" id="recurrence_options">
+                            <h4>Recurring Schedule Configuration</h4>
+
+                            <div class="form-grid" style="gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="interval">Recurrence Interval (in Minutes) <span style="color: red;">*</span></label>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="interval" 
+                                        name="interval" 
+                                        min="1" 
+                                        placeholder="e.g., 60 for 1 hour"
+                                    />
+                                    <small style="font-size: 0.85rem; color: var(--text-light);">
+                                        How often to send emails (e.g., 60 for every hour)
+                                    </small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="start_date">Campaign Start Date <span style="color: red;">*</span></label>
+                                    <input type="date" class="form-control" id="start_date" name="start_date">
+                                    <small style="font-size: 0.85rem; color: var(--text-light);">The date the campaign begins</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="end_date">Campaign End Date <span style="color: red;">*</span></label>
+                                    <input type="date" class="form-control" id="end_date" name="end_date">
+                                    <small style="font-size: 0.85rem; color: var(--text-light);">The date the campaign ends</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="total_campaign_count">Total Sends <span style="color: red;">*</span></label>
+                                    <input type="number" class="form-control" id="total_campaign_count" name="total_campaign_count" min="1" placeholder="e.g., 12">
+                                    <small style="font-size: 0.85rem; color: var(--text-light);">Total number of emails to send across all days</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="start_time">Daily Start Time (UTC) <span style="color: red;">*</span></label>
+                                    <input type="time" class="form-control" id="start_time" name="start_time" placeholder="e.g., 09:00">
+                                    <small style="font-size: 0.85rem; color: var(--text-light);">Start sending emails after this time each day (e.g., 09:00)</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="end_time">Daily End Time (UTC) <span style="color: red;">*</span></label>
+                                    <input type="time" class="form-control" id="end_time" name="end_time" placeholder="e.g., 17:00">
+                                    <small style="font-size: 0.85rem; color: var(--text-light);">Stop sending emails after this time each day (e.g., 17:00)</small>
+                                </div>
+        
+                                <div class="form-group full-width">
+                                    <p style="font-weight: 500; font-size: 0.95rem; color: var(--info-color); margin-top: 0.5rem;">
+                                        📌 All fields marked with <span style="color: red;">*</span> are required for recurring campaigns
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="hr-context-fields" class="hr-context-fields">
+                            <h4>Customized Template Specific Fields</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="name">Employee Name:</label>
+                                    <input type="text" id="name" name="name" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Employee Email:</label>
+                                    <input type="email" id="email" name="email" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="department">Department:</label>
+                                    <input type="text" id="department" name="department" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="company">Company:</label>
+                                    <input type="text" id="company" name="company" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_type">Email Type:</label>
+                                    <input type="text" id="email_type" name="email_type" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="ref_no">Reference Number:</label>
+                                    <input type="text" id="ref_no" name="ref_no" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="issue_date">Issue Date:</label>
+                                    <input type="date" id="issue_date" name="issue_date" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="csvFile">Upload Employee CSV File:</label>
+                            <input type="file" id="csvFile" name="csvFile" accept=".csv" required />
+                            <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;"><strong>Example of CSV File:</strong></p>
+                            <img src="https://i.ibb.co/LdWGHyzB/Screenshot-2025-03-11-144203.png" alt="Example CSV File" />
+                        </div>
+
+                        <div class="form-actions">
+                             <button type="submit" class="btn btn-primary">Submit Campaign</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Image Source Selection Handler
+        document.querySelectorAll('input[name="image_source"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const logoSection = document.getElementById('logo-upload-section');
+                const aiSection = document.getElementById('ai-prompt-section');
+                
+                logoSection.classList.remove('active');
+                aiSection.classList.remove('active');
+                
+                if (this.value === 'logo') {
+                    logoSection.classList.add('active');
+                } else if (this.value === 'ai_generated') {
+                    aiSection.classList.add('active');
+                }
+            });
+        });
+
+        // Logo preview functionality
+        document.getElementById('logo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('logo-preview');
+            const previewImg = document.getElementById('logo-preview-img');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        // HR Template fields handler
+        document.getElementById("category").addEventListener("change", function () {
+            const selected = this.value;
+            const hrFields = document.getElementById("hr-context-fields");
+
+            if (selected === "HR Template") {
+                hrFields.style.display = "block";
+                window.open('/customized_template.html', '_blank'); 
+            } else {
+                hrFields.style.display = "none";
+            }
+        });
+
+        // Auto-populate issue date
+        document.addEventListener("DOMContentLoaded", function() {
+            const issueDateField = document.getElementById("issue_date");
+            if (issueDateField) {
+                const today = new Date().toISOString().split('T')[0];
+                issueDateField.value = today;
+            }
+            
+            const recurrenceType = document.getElementById('recurrence_type');
+            const recurrenceOptions = document.getElementById('recurrence_options');
+            if (recurrenceType.value === 'recurring') {
+                recurrenceOptions.style.display = 'block';
+            } else {
+                recurrenceOptions.style.display = 'none';
+            }
+        });
+
+        // Recurring options handler
+        document.getElementById('recurrence_type').addEventListener('change', function () {
+            const recurrenceOptions = document.getElementById('recurrence_options');
+            if (this.value === 'recurring') {
+                recurrenceOptions.style.display = 'block';
+            } else {
+                recurrenceOptions.style.display = 'none';
+            }
+        });
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            // Remove any previous error messages
+            const oldAlerts = document.querySelectorAll('.alert');
+            oldAlerts.forEach(alert => alert.remove());
+
+            const imageSource = document.querySelector('input[name="image_source"]:checked').value;
+            
+            // Validate AI prompt
+            if (imageSource === 'ai_generated') {
+                const aiPrompt = document.getElementById('ai_prompt').value.trim();
+                if (!aiPrompt) {
+                    e.preventDefault();
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger';
+                    alertDiv.textContent = '⚠️ Please enter a prompt for AI image generation.';
+                    document.querySelector('.card').prepend(alertDiv); 
+                    document.getElementById('ai_prompt').focus();
+                    return false;
+                }
+            } else if (imageSource === 'logo') {
+                const logoFile = document.getElementById('logo').files[0];
+                if (!logoFile) {
+                    e.preventDefault();
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger';
+                    alertDiv.textContent = '⚠️ Please upload a company logo.';
+                    document.querySelector('.card').prepend(alertDiv); 
+                    document.getElementById('logo').focus();
+                    return false;
+                }
+            }
+
+            // Validate recurring campaign fields
+            const recurrenceType = document.getElementById('recurrence_type').value;
+            
+            if (recurrenceType === 'recurring') {
+                const interval = document.getElementById('interval').value;
+                const startDate = document.getElementById('start_date').value;
+                const endDate = document.getElementById('end_date').value;
+                const totalCount = document.getElementById('total_campaign_count').value;
+                const startTime = document.getElementById('start_time').value;
+                const endTime = document.getElementById('end_time').value;
+                
+                // Check all required fields
+                if (!interval || !startDate || !endDate || !totalCount || !startTime || !endTime) {
+                    e.preventDefault();
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger';
+                    alertDiv.textContent = '⚠️ All recurring campaign fields are required. Please fill in: Interval, Start Date, End Date, Total Sends, Start Time, and End Time.';
+                    document.querySelector('.card').prepend(alertDiv);
+                    
+                    // Focus on first empty field
+                    if (!interval) document.getElementById('interval').focus();
+                    else if (!startDate) document.getElementById('start_date').focus();
+                    else if (!endDate) document.getElementById('end_date').focus();
+                    else if (!totalCount) document.getElementById('total_campaign_count').focus();
+                    else if (!startTime) document.getElementById('start_time').focus();
+                    else if (!endTime) document.getElementById('end_time').focus();
+                    
+                    return false;
+                }
+                
+                // Validate dates
+                if (new Date(endDate) < new Date(startDate)) {
+                    e.preventDefault();
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger';
+                    alertDiv.textContent = '⚠️ End Date must be after Start Date.';
+                    document.querySelector('.card').prepend(alertDiv);
+                    document.getElementById('end_date').focus();
+                    return false;
+                }
+                
+                // Validate times
+                if (endTime <= startTime) {
+                    e.preventDefault();
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger';
+                    alertDiv.innerHTML = `⚠️ <strong>Daily End Time (${endTime}) must be after Daily Start Time (${startTime}).</strong><br><br>Please correct your time window. For example:<br>• Start Time: 09:00<br>• End Time: 17:00`;
+                    document.querySelector('.card').prepend(alertDiv);
+                    document.getElementById('end_time').focus();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return false;
+                }
+
+                // Validate that interval makes sense
+                const totalDays = Math.floor((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1;
+                const emailsPerDay = Math.ceil(parseInt(totalCount) / totalDays);
+                
+                // Calculate time window in minutes
+                const [startHour, startMin] = startTime.split(':').map(Number);
+                const [endHour, endMin] = endTime.split(':').map(Number);
+                const timeWindowMinutes = (endHour * 60 + endMin) - (startHour * 60 + startMin);
+                
+                // Calculate required minutes
+                const requiredMinutes = (emailsPerDay - 1) * parseInt(interval);
+                
+                if (requiredMinutes > timeWindowMinutes) {
+                    e.preventDefault();
+                    const hoursNeeded = (requiredMinutes / 60).toFixed(1);
+                    const hoursAvailable = (timeWindowMinutes / 60).toFixed(1);
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger';
+                    alertDiv.innerHTML = `⚠️ <strong>Invalid Configuration:</strong><br><br>To send ${emailsPerDay} emails per day with ${interval} minute intervals, you need ${hoursNeeded} hours, but your time window is only ${hoursAvailable} hours.<br><br><strong>Solutions:</strong><br>• Increase your daily time window<br>• Decrease the recurrence interval<br>• Reduce total sends`;
+                    document.querySelector('.card').prepend(alertDiv);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
